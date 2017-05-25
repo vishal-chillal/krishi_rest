@@ -1,6 +1,7 @@
-from django.http import HttpResponseRedirect, HttpResponse
-from krishi.forms import LoginForm
+from django.http import HttpResponse
 from django.shortcuts import render
+from function_api import *
+import json
 
 
 def index(request):
@@ -10,18 +11,12 @@ def index(request):
 def login(request):
     username = "not loged in"
     if request.method == "POST":
-        MyLoginForm = LoginForm(request.POST)
-
-        # username = MyLoginForm.cleaned_data['username']
-        print request.body.split('&')[1]
-        if MyLoginForm.is_valid():
-            username = MyLoginForm.cleaned_data['username']
-    else:
-        MyLoginForm = LoginForm()
+        data = clean_json(request.body)
+        data = json.loads(data)
+        if validate_login(data):
+            username = data['username']
     return render(request, 'loggedin.html', {"username": username})
-    # return render(request, 'login.html')
 
 
 def signin(request):
-    # return HttpResponseRedirect('login.html')
     return render(request, 'login.html')
