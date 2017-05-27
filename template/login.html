@@ -1,40 +1,29 @@
 <html>
-   <body>
-      
-      <form name = "form" action = "{% url "krishi.views.login" %}" 
-         method = "POST" >{% csrf_token %}
-         
-         <div style = "max-width:470px;">
-            <center> 
-               <input type = "text" style = "margin-left:20%;" 
-                  placeholder = "Identifiant" name = "username" />
-            </center>
-         </div>
-			
-         <br>
-         
-         <div style = "max-width:470px;">
-            <center>
-               <input type = "password" style = "margin-left:20%;" 
-                  placeholder = "password" name = "password" />
-            </center>
-         </div>
-			
-         <br>
-         
-         <div style = "max-width:470px;">
-            <center> 
-            
-               <button style = "border:0px; background-color:#4285F4; margin-top:8%;
-                  height:35px; width:80%;margin-left:19%;" type = "submit" 
-                  value = "Login" >
+<link rel="stylesheet" type="text/css" href="../../static/admin/css/login.css">
+<link rel="stylesheet" type="text/css" href="../../static/admin/css/myStyleSheet.css">
+<body>
+
+   <div class="login">
+      <div id="container">
+         <form name = "form" action = "{% url "krishi.views.login" %}" method = "POST" >{% csrf_token %}
+            <div id="header"> Login Page </div>
+            <div class="form-row">
+               <label> Username </label>
+               <input id="id_username" type = "text" placeholder = "Identifiant" name = "username" />
+            </div>
+
+            <div class="form-row">
+               <label> password </label>
+               <input id="id_password" type = "password" placeholder = "password" name = "password" />
+            </div>
+            <div class="submit-row">
+               <button type = "submit" value = "Login"  class="btn">
                   <strong>Login</strong>
                </button>
-               
-            </center>
-         </div>
-         
-      </form>
-      
-   </body>
+            </div>
+         </form>
+      </div>
+   </div>
+
+</body>
 </html>
