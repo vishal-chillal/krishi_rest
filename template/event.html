@@ -1,0 +1,43 @@
+<<!DOCTYPE html>
+<html>
+<head>
+    <title>Event Management</title>
+    <link href="lib/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <link href="lib/jquery-ui.css" type="text/css" rel="stylesheet">
+
+    <link href="myStyleSheet.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <form name = "form" action = "{% url "krishi.views.event" %}" method = "POST" >{% csrf_token %}
+        <div class="container">
+            <div class="row reg_form form">
+                <div class="col-md-4 col-md-offset-1">
+                    <input id="id_event_name" class="form-control" type="text" required="" placeholder="Event Name" name="eventname">
+                    <input id="id_event_descr" class="form-control" type="text" required="" placeholder="Event description" name="description">
+                    <input id="id_event_info" class="form-control" type="text" required="" placeholder="Event info" name="info">
+                    <input id="id_event_capacity" class="form-control" type="text" required="" placeholder="Event capacity" name="capacity">
+                    <input id="id_event_location" class="form-control" type="text" required="" placeholder="Event location" name="location">
+                    <input id="id_event_fees" class="form-control" type="text" required="" placeholder="Event fees" name="fees">
+                    <input id="dateIDS" class="form-control hasDatepicker" placeholder="date of event start" type="date" name="startdate">
+                    <input id="dateIDE" class="form-control hasDatepicker" placeholder="date of event end" type="date" name="enddate">
+                </div>
+            </div>
+        </div>
+        <div class="submit-row">
+               <button type = "submit" value = "Add Event"  class="btn">
+                  <strong>Add Event</strong>
+               </button>
+            </div>
+
+    </form>
+
+    <form name = "form" action = "{% url "krishi.views.event" %}" method = "GET"> 
+    <div class="submit-row">
+               <button type = "submit" value = "Get All Events"  class="btn">
+                  <strong>Get ALL Events</strong>
+               </button>
+            </div>
+
+    </form>
+</body>
+</html>

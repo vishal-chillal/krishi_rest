@@ -13,7 +13,7 @@ def login(request):
     resp = {}
     if request.method == "POST":
         data = clean_json(request.body)
-        data = json.loads(data)
+        #data = json.loads(data)
         if validate_login(data):
             username = data['username']
             resp["status"] = 201
@@ -24,8 +24,16 @@ def login(request):
         resp["status"] = 403
         resp["message"] = "Invalid"
         resp["username"] = username
-    return render(request, 'loggedin.html', resp)
+    return render(request, 'event.html', resp)
 
+
+def event(request):
+    if request.method == "GET":
+        print getAllEvents()
+        return HttpResponse(getAllEvents())
+    elif request.method == "POST":
+        data = clean_json(request.body)
+        return HttpResponse(addEvent(data))
 
 def signin(request):
     return render(request, 'login.html')

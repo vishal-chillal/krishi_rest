@@ -11,6 +11,11 @@ class UserInfo(models.Model):
 
 class Event(models.Model):
     """docstring for Event"""
-    
-
-# Create your models here.
+    eventname = models.CharField(max_length=100)
+    description = models.CharField(max_length=800)
+    startdate = models.DateTimeField()
+    enddate = models.DateTimeField()
+    location = models.CharField(max_length=100)
+    capacity = models.IntegerField()
+    fees = models.IntegerField()
+    info = models.CharField(max_length=100)

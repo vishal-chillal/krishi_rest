@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'^signin/$', views.signin, name='signin'),
-    url(r'^login/$', views.login, name='login')
+    url(r'^login/$', views.login, name='login'),
+    url(r'^event/$', views.event, name='event'),
 ]
