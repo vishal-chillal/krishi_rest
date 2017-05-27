@@ -8,6 +8,16 @@ class UserInfo(models.Model):
     user = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
 
+class EndUser(models.Model):
+    """class for user login """
+    username = models.CharField(max_length=100)
+    password = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+
+class Subscription(models.Model):
+    username = models.CharField(max_length=100)
+    eventname = models.CharField(max_length=100)
 
 class Event(models.Model):
     """docstring for Event"""

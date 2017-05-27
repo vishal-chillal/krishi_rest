@@ -7,7 +7,9 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^admin/', admin.site.urls),
-    url(r'^signin/$', views.signin, name='signin'),
-    url(r'^login/$', views.login, name='login'),
-    url(r'^event/$', views.event, name='event'),
+    url(r'^administrator/signin/$', views.signin, name='signin'),
+    url(r'^administrator/home/$', views.home, name='home'),
+    url(r'^administrator/event/$', views.event, name='event'),
+    url(r'^signin/$', views.usersignin, name='signin'),
+    url(r'^home/$', views.userhome, name='home'),
 ]

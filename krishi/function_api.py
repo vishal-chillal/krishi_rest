@@ -1,8 +1,9 @@
 import json
-from krishi.models import UserInfo, Event
+from krishi.models import UserInfo, Event, EndUser
 
 
 user_details = UserInfo.objects.values()
+enduser_details = EndUser.objects.values()
 event_details = Event.objects.values()
 
 
@@ -22,9 +23,22 @@ def validate_login(req):
             break
     return response
 
+def validate_userlogin(req):
+    response = False
+    for entry in enduser_details:
+        if(entry["username"] == req["username"] and entry["password"] == req["password"]):
+            response = True
+            break
+    return response
+
 def getAllEvents():
     event_details = Event.objects.values()
     return event_details
+
+# def getMyEvents(username):
+#     myEventList = []
+#     for eachevent in Event.objects.raw("SELECT * from krishi_event where user")
+#     return 
 
 def getEvent(req,id):
     res = ""
