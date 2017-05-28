@@ -1,10 +1,12 @@
 import json
-from krishi.models import UserInfo, Event, EndUser
+from krishi.models import UserInfo, Event, EndUser, Subscription
 
 
 user_details = UserInfo.objects.values()
 enduser_details = EndUser.objects.values()
 event_details = Event.objects.values()
+allEventList = {}
+
 
 
 def clean_json(request):
@@ -33,12 +35,16 @@ def validate_userlogin(req):
 
 def getAllEvents():
     event_details = Event.objects.values()
-    return event_details
+    for eachevent in event_details:
+        allEventList[eachevent["id"]] = eachevent["eventname"]
+    return allEventList
 
-# def getMyEvents(username):
-#     myEventList = []
-#     for eachevent in Event.objects.raw("SELECT * from krishi_event where user")
-#     return 
+def getMyEvents(username):
+    myEventList = []
+    for eachevent in Subscription.objects.raw("SELECT * from krishi_subscription where username = '"+username+"'"):
+        myEventList.append(allEventList[eachevent.eventid])
+
+    return myEventList
 
 def getEvent(req,id):
     res = ""

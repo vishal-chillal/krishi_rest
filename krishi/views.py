@@ -30,21 +30,26 @@ def home(request):
             return render(request, 'loggedin.html', resp)
 
 def userhome(request):
-    username = "not loged in"
+    #username = "not loged in"
     resp = {}
     if request.method == "POST":
         data = clean_json(request.body)
         #data = json.loads(data)
         if validate_userlogin(data):
+            username = data['username']
             html = '<h1>All Events</h1><br><div>'
             allevents = getAllEvents()
             request.session['username'] = username
-            for eachevent in allevents:
-                html += "<a href="+str(eachevent['eventname'])+">"+str(eachevent['eventname'])+"</a><br>"
+            #return HttpResponse(allevents) #
+
+            for eachevent in allevents.items():
+                html += "<a href="+str(eachevent[1])+">"+str(eachevent[1])+"</a><br>"
             html = html + '</div><br><br><h1>My Events</h1><br><div>'
 
-            #myevents = getMyEvents(username)
-
+            myevents = getMyEvents(username)
+            for eachevent in myevents:
+                html += "<a href="+str(eachevent)+">"+str(eachevent)+"</a><br>"
+            html = html + '</div><br><div>'
             return HttpResponse(html) #
         else:
             username = "not 123"

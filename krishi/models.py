@@ -17,7 +17,7 @@ class EndUser(models.Model):
 
 class Subscription(models.Model):
     username = models.CharField(max_length=100)
-    eventname = models.CharField(max_length=100)
+    eventid = models.CharField(max_length=100)
 
 class Event(models.Model):
     """docstring for Event"""
