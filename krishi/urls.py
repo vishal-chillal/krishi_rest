@@ -11,5 +11,5 @@ urlpatterns = [
     url(r'^administrator/event/$', views.event, name='event'),
     url(r'^signin/$', views.usersignin, name='signin'),
     url(r'^home/$', views.userhome, name='home'),
-    url(r'^home/(?P<myEvent>[1-9]+)/$', views.showEventDetails, name='details'),
+    url(r'^home/(?P<myEvnt>[1-9]+)/$', views.showEventDetails, name='details'),
 ]

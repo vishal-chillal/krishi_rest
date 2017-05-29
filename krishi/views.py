@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from function_api import *
+from function_api import FunctionAPI
+
+fp = FunctionAPI()
 
 
 def index(request):
@@ -12,8 +14,8 @@ def home(request):
     username = "not loged in"
     resp = {}
     if request.method == "POST":
-        data = clean_json(request.body)
-        if validate_login(data):
+        data = fp.clean_json(request.body)
+        if fp.validate_login(data):
             username = data['username']
             resp["status"] = 201
             resp["message"] = "logged in"
@@ -29,38 +31,44 @@ def home(request):
             return render(request, 'loggedin.html', resp)
 
 
-def showEventDetails(req, myEvent):
-    res = getEvent(myEvent)
-    return HttpResponse(myEvent + " " + res)
+def showEventDetails(req, myEvnt):
+    res = fp.getEvent(myEvnt)
+    html = "<table>"
+    for i in res.items():
+        html += "<tr><td>" + str(i[0])
+        html += "</td><td>" + str(i[1])
+        html += "</td></tr>"
+    html += "</table>"
+    return HttpResponse(html)
 
 
 def userhome(request):
     ''' handle request from enduser home'''
     resp = {}
     if request.method == "POST":
-        data = clean_json(request.body)
-        if validate_userlogin(data):
+        data = fp.clean_json(request.body)
+        if fp.validate_userlogin(data):
             username = data['username']
             html = '<h1>All Events</h1><br><div>'
-            allevents = getAllEvents()
+            allevents = fp.getAllEvents()
             request.session['username'] = username
 
             for each in allevents.items():
                 html += "<a href="
-                url_name = str(each[0])  # .replace(" ", "_").lower()
+                url_name = str(each[0])
                 html += url_name + ">"
                 html += str(each[1]) + "</a><br>"
             html += '</div><br><br><h1>My Events</h1><br><div>'
 
-            myevents = getMyEvents(username)
+            myevents = fp.getMyEvents(username)
             for each in myevents:
-                html += "<a href=" + str(each) + ">" + str(each) + "</a><br>"
+                html += "<a href=" + str(each[0]) \
+                    + ">" + str(each[1]) + "</a><br>"
             html = html + '</div><br><div>'
             return HttpResponse(html)
         else:
             username = "not 123"
             resp["username"] = username
-            print request
             return render(request, 'loggedin.html', resp)
 
 
@@ -73,8 +81,8 @@ def event(request):
             return HttpResponse("INVALID")
 
     elif request.method == "POST":
-        data = clean_json(request.body)
-        return HttpResponse(addEvent(data))
+        data = fp.clean_json(request.body)
+        return HttpResponse(fp.addEvent(data))
 
 
 def signin(request):
