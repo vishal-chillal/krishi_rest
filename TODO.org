@@ -1,0 +1,10 @@
+* #Tasks#
+
+** admin panal
+   - delete current events
+   - add Geological region
+   - current count of intrested people
+
+** end user panal
+   - unsubscribe from event
+   - share event details with friends

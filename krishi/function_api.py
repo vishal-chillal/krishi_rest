@@ -16,11 +16,10 @@ class FunctionAPI(object):
         dic = {}
         for x in ls:
             dic[x.split('=')[0]] = x.split('=')[1]
-        # return json.dumps(dic)
         return dic
 
     def validate_login(self, req):
-        ''' validate username and password of admin user '''
+        ''' validate username and password of admor9in user '''
         response = False
         for entry in self.user_details:
             if entry["user"] == req["username"] and\
@@ -55,8 +54,9 @@ class FunctionAPI(object):
                     where username = '" + username + "'"
 
         event_lst = Subscription.objects.raw(query)
-        for eachevent in event_lst:
-            myEventList.append((eachevent.eventid, self.allEventList[eachevent.eventid]))
+        for eachEvnt in event_lst:
+            evnt_tup = (eachEvnt.eventid, self.allEventList[eachEvnt.eventid])
+            myEventList.append(evnt_tup)
 
         return myEventList
 
