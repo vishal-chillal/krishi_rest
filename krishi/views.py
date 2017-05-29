@@ -1,7 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from function_api import *
-import json
 
 
 def index(request):
@@ -9,11 +8,11 @@ def index(request):
 
 
 def home(request):
+    ''' handle post request from admin home'''
     username = "not loged in"
     resp = {}
     if request.method == "POST":
         data = clean_json(request.body)
-        #data = json.loads(data)
         if validate_login(data):
             username = data['username']
             resp["status"] = 201
@@ -29,39 +28,46 @@ def home(request):
             print request
             return render(request, 'loggedin.html', resp)
 
+
+def showEventDetails(req, myEvent):
+    res = getEvent(myEvent)
+    return HttpResponse(myEvent + " " + res)
+
+
 def userhome(request):
-    #username = "not loged in"
+    ''' handle request from enduser home'''
     resp = {}
     if request.method == "POST":
         data = clean_json(request.body)
-        #data = json.loads(data)
         if validate_userlogin(data):
             username = data['username']
             html = '<h1>All Events</h1><br><div>'
             allevents = getAllEvents()
             request.session['username'] = username
-            #return HttpResponse(allevents) #
 
-            for eachevent in allevents.items():
-                html += "<a href="+str(eachevent[1])+">"+str(eachevent[1])+"</a><br>"
-            html = html + '</div><br><br><h1>My Events</h1><br><div>'
+            for each in allevents.items():
+                html += "<a href="
+                url_name = str(each[0])  # .replace(" ", "_").lower()
+                html += url_name + ">"
+                html += str(each[1]) + "</a><br>"
+            html += '</div><br><br><h1>My Events</h1><br><div>'
 
             myevents = getMyEvents(username)
-            for eachevent in myevents:
-                html += "<a href="+str(eachevent)+">"+str(eachevent)+"</a><br>"
+            for each in myevents:
+                html += "<a href=" + str(each) + ">" + str(each) + "</a><br>"
             html = html + '</div><br><div>'
-            return HttpResponse(html) #
+            return HttpResponse(html)
         else:
             username = "not 123"
             resp["username"] = username
             print request
-            return render(request, 'loggedin.html', resp) #
+            return render(request, 'loggedin.html', resp)
+
 
 def event(request):
+    ''' admin panal handle event request '''
     if request.method == "GET":
-        if request.session.has_key('username'):
-            print getAllEvents()
-        #return HttpResponse()
+        if 'username' in request.session:
             return HttpResponse(request.session['username'])
         else:
             return HttpResponse("INVALID")
@@ -69,10 +75,13 @@ def event(request):
     elif request.method == "POST":
         data = clean_json(request.body)
         return HttpResponse(addEvent(data))
-        #return HttpResponse(request.data)
+
 
 def signin(request):
+    ''' admin signin request '''
     return render(request, 'login.html')
 
+
 def usersignin(request):
+    ''' end user signin request '''
     return render(request, 'userlogin.html')
