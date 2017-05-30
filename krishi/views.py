@@ -33,14 +33,7 @@ def home(request):
 
 def showEventDetails(req, myEvnt):
     res = fp.getEvent(myEvnt)
-    # html = '''<form name = "form" action = "SUBSCRIBE/"\
-    #     method = "POST" >'''
-    html = "<table>"
-    for i in res.items():
-        html += "<tr><td>" + str(i[0])
-        html += "</td><td>" + str(i[1])
-        html += "</td></tr>"
-    html += "</table>"
+    html = getEventDetailsTable(myEvnt)
     subscribe = "SUBSCRIBE_"
     if res[u'id'] in fp.myEventList.keys():
         subscribe = "UNSUBSCRIBE_"
@@ -49,12 +42,27 @@ def showEventDetails(req, myEvnt):
     return HttpResponse(html)
 
 
+
+def getEventDetailsTable(myEvnt):
+    res = fp.getEvent(myEvnt)
+    html = "<table>"
+    for i in res.items():
+        html += "<tr><td>" + str(i[0])
+        html += "</td><td>" + str(i[1])
+        html += "</td></tr>"
+    html += "</table>"
+    return html
+
+
+
 def handle_event(request, evnt):
     username = request.session["username"]
     # return HttpResponse(str(request.body) + "  asd")
     if("UNSUBSCRIBE" not in evnt):
         return HttpResponse(fp.subscribe(evnt, username))
-    return HttpResponse(fp.deleteEvent(evnt, username))
+    else:
+        return HttpResponse(fp.unsubscribe(evnt, username))
+
 
 
 def userhome(request):
@@ -64,16 +72,9 @@ def userhome(request):
         data = fp.clean_json(request.body)
         if fp.validate_userlogin(data):
             username = data['username']
-            html = '<h1>All Events</h1><br><div>'
-            allevents = fp.getAllEvents()
-            request.session['username'] = username
-
-            for each in allevents.items():
-                html += "<a href="
-                url_name = str(each[0])
-                html += url_name + ">"
-                html += str(each[1]) + "</a><br>"
-            html += '</div><br><br><h1>My Events</h1><br><div>'
+            request.session["username"] = username
+            html = fp.generateAllEventList()
+            html += '<br><h1>My Events</h1><br><div>'
 
             myevents = fp.getMyEvents(username)
             for each in myevents.items():
@@ -91,7 +92,8 @@ def event(request):
     ''' admin panal handle event request '''
     if request.method == "GET":
         if 'username' in request.session:
-            return HttpResponse(request.session['username'])
+            html = fp.generateAllEventList()
+            return HttpResponse(html)
         else:
             return HttpResponse("INVALID")
 

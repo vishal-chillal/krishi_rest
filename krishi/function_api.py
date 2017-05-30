@@ -42,6 +42,19 @@ class FunctionAPI(object):
                 break
         return response
 
+
+    def generateAllEventList(self):
+        html = '<h1>All Events</h1><br><div>'
+        allevents = self.getAllEvents()
+        for each in allevents.items():
+            html += "<a href="
+            url_name = str(each[0])
+            html += url_name + ">"
+            html += str(each[1]) + "</a><br>"
+        html += '</div><br>'
+        return html
+
+
     def getAllEvents(self):
         ''' get  all events avalable to subscribe '''
         self.counter += 1
@@ -86,10 +99,22 @@ class FunctionAPI(object):
             print e
             return False
 
-    def deleteEvent(self, event, username):
-        obj = Subscription()
+    def updateEventCapacity(self, decision, eventid):
         try:
-            obj.dele(username)
+            currentCapacity = Event.objects.filter(id=eventid).values()[0]["capacity"]
+            currentCapacity += decision
+            Event.objects.filter(id=1).update(capacity = currentCapacity)
+            return True
+        except Exception as e:
+            print e
+            return False        
+
+    def unsubscribe(self, event, username):
+        id = int(event.split('_')[1])
+        try:
+            Subscription.objects.filter(username=username).delete()
+            del(self.myEventList[id])
+            return self.updateEventCapacity(1,id)
         except Exception as e:
             return str(e)
 
@@ -102,5 +127,6 @@ class FunctionAPI(object):
         try:
             s.save()
             self.Subscription_count += 1
+            return self.updateEventCapacity(-1,s.eventid)
         except Exception, e:
             return s.eventid, e

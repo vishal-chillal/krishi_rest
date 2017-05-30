@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^administrator/signin/$', views.signin, name='signin'),
     url(r'^administrator/home/$', views.home, name='home'),
     url(r'^administrator/event/$', views.event, name='event'),
+    url(r'^administrator/event/(?P<myEvnt>[1-9]+)/$', views.showEventDetails, name='details'),
     url(r'^signin/$', views.usersignin, name='signin'),
     url(r'^home/$', views.userhome, name='home'),
     url(r'^home/[1-9]+/(?P<evnt>[A-Z]+[_]+[1-9]+)/$', views.handle_event, name='handle_events'),
