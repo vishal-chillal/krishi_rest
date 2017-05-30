@@ -33,13 +33,28 @@ def home(request):
 
 def showEventDetails(req, myEvnt):
     res = fp.getEvent(myEvnt)
+    # html = '''<form name = "form" action = "SUBSCRIBE/"\
+    #     method = "POST" >'''
     html = "<table>"
     for i in res.items():
         html += "<tr><td>" + str(i[0])
         html += "</td><td>" + str(i[1])
         html += "</td></tr>"
     html += "</table>"
+    subscribe = "SUBSCRIBE_"
+    if res[u'id'] in fp.myEventList.keys():
+        subscribe = "UNSUBSCRIBE_"
+    html += "<a href=" + subscribe + str(res[u'id']) + ">"
+    html += subscribe[:-1] + "</a>"
     return HttpResponse(html)
+
+
+def handle_event(request, evnt):
+    username = request.session["username"]
+    # return HttpResponse(str(request.body) + "  asd")
+    if("UNSUBSCRIBE" not in evnt):
+        return HttpResponse(fp.subscribe(evnt, username))
+    return HttpResponse(fp.deleteEvent(evnt, username))
 
 
 def userhome(request):
@@ -61,7 +76,7 @@ def userhome(request):
             html += '</div><br><br><h1>My Events</h1><br><div>'
 
             myevents = fp.getMyEvents(username)
-            for each in myevents:
+            for each in myevents.items():
                 html += "<a href=" + str(each[0]) \
                     + ">" + str(each[1]) + "</a><br>"
             html = html + '</div><br><div>'

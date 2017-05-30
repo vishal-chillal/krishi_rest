@@ -8,7 +8,9 @@ class FunctionAPI(object):
         self.enduser_details = EndUser.objects.values()
         self.event_details = {}
         self.allEventList = {}
+        self.myEventList = {}
         self.counter = 0
+        self.Subscription_count = 0
 
     def clean_json(self, request):
         ''' get the request body and convert it into clean json '''
@@ -49,16 +51,15 @@ class FunctionAPI(object):
         return self.allEventList
 
     def getMyEvents(self, username):
-        myEventList = []
         query = "SELECT * from krishi_subscription\
                     where username = '" + username + "'"
 
         event_lst = Subscription.objects.raw(query)
         for eachEvnt in event_lst:
-            evnt_tup = (eachEvnt.eventid, self.allEventList[eachEvnt.eventid])
-            myEventList.append(evnt_tup)
+            value = self.allEventList[eachEvnt.eventid]
+            self.myEventList[eachEvnt.eventid] = value
 
-        return myEventList
+        return self.myEventList
 
     def getEvent(self, id):
         res = {}
@@ -84,3 +85,22 @@ class FunctionAPI(object):
         except Exception as e:
             print e
             return False
+
+    def deleteEvent(self, event, username):
+        obj = Subscription()
+        try:
+            obj.dele(username)
+        except Exception as e:
+            return str(e)
+
+    def subscribe(self, event, username):
+        s = Subscription()
+        s.eventid = int(event.split('_')[1])
+        s.username = username
+        id = self.Subscription_count
+        s.id = id
+        try:
+            s.save()
+            self.Subscription_count += 1
+        except Exception, e:
+            return s.eventid, e

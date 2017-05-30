@@ -22,6 +22,18 @@ class Subscription(models.Model):
     username = models.CharField(max_length=100)
     eventid = models.CharField(max_length=100)
 
+    # def getCount(self):
+
+    # def dele(self, username):
+    #     # print username
+    #     k = Subscription.objects.filter(username=username)
+    #     # print k.username
+    #     return k
+    #     try:
+    #         Subscription.objects.filter(username=username).delete()
+    #     except Exception as e:
+    #         print e
+
 
 class Event(models.Model):
     '''docstring for Event'''

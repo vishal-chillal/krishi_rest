@@ -1,12 +1,15 @@
+{% load staticfiles %}
 <html>
-<link rel="stylesheet" type="text/css" href="../../static/admin/css/login.css">
-<link rel="stylesheet" type="text/css" href="../../static/admin/css/myStyleSheet.css">
+<link rel="stylesheet" type="text/css" href="{% static 'event/mycss.css' %}">
+<!-- <link rel="stylesheet" type="text/css" href="/static/event/mycss.css"> -->
 <body>
 
    <div class="login">
-      <div id="container">
+      <div>
+         <h1><a href="/krishi/administrator/signin/">Admin Login Page </a></h1>
+      </div>
+      <div class="container">
          <form name = "form" action = "{% url "krishi.views.home" %}" method = "POST" >{% csrf_token %}
-            <div id="header"> Login Page </div>
             <div class="form-row">
                <label> Username </label>
                <input id="id_username" type = "text" placeholder = "Identifiant" name = "username" />

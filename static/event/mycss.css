@@ -1,0 +1,25 @@
+/*html {
+    background-colour: red;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 29em;
+    min-width: 350px;
+    margin: 100px auto;
+    padding: 20em;
+    color: green;
+}
+*/
+h1{
+	background-color: #000000;
+}
+
+h1 a {
+    /*color: #FCA200;*/
+    color: red;
+    border: black;
+    /*font-family: 'Lobster';*/
+}
+/*
+body {
+    padding-left: 15px;
+}*/
