@@ -57,7 +57,6 @@ def getEventDetailsTable(myEvnt):
     return html
 
 
-
 def handle_event(request, evnt):
     username = request.session["username"]
     # return HttpResponse(str(request.body) + "  asd")
@@ -65,7 +64,6 @@ def handle_event(request, evnt):
         return HttpResponse(fp.subscribe(evnt, username))
     else:
         return HttpResponse(fp.unsubscribe(evnt, username))
-
 
 
 def userhome(request):
@@ -84,6 +82,7 @@ def userhome(request):
                 html += "<a href=" + str(each[0]) \
                     + ">" + str(each[1]) + "</a><br>"
             html = html + '</div><br><div>'
+            html += username
             return HttpResponse(html)
         else:
             username = "not 123"

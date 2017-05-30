@@ -8,7 +8,6 @@ class FunctionAPI(object):
         self.enduser_details = EndUser.objects.values()
         self.event_details = {}
         self.allEventList = {}
-        self.myEventList = {}
         self.counter = 0
         self.Subscription_count = 0
 
@@ -42,7 +41,6 @@ class FunctionAPI(object):
                 break
         return response
 
-
     def generateAllEventList(self):
         html = '<h1>All Events</h1><br><div>'
         allevents = self.getAllEvents()
@@ -54,7 +52,6 @@ class FunctionAPI(object):
         html += '</div><br>'
         return html
 
-
     def getAllEvents(self):
         ''' get  all events avalable to subscribe '''
         self.counter += 1
@@ -64,13 +61,15 @@ class FunctionAPI(object):
         return self.allEventList
 
     def getMyEvents(self, username):
-        query = "SELECT * from krishi_subscription where username = '" + username + "'"
+        query = """SELECT * from krishi_subscription where username = """
+        query += "'" + username + "'"
+        self.myEventList = {}
 
         event_lst = Subscription.objects.raw(query)
         for eachEvnt in event_lst:
             value = self.allEventList[eachEvnt.eventid]
             self.myEventList[eachEvnt.eventid] = value
-
+        print self.myEventList, " ", username
         return self.myEventList
 
     def getEvent(self, id):
@@ -98,26 +97,25 @@ class FunctionAPI(object):
             print e
             return False
 
-    def getEventCapacity(self,eventid):
+    def getEventCapacity(self, eventid):
         return Event.objects.filter(id=eventid).values()[0]["capacity"]
-
 
     def updateEventCapacity(self, decision, eventid):
         try:
             currentCapacity = self.getEventCapacity(eventid)
             currentCapacity += decision
-            Event.objects.filter(id=1).update(capacity = currentCapacity)
+            Event.objects.filter(id=eventid).update(capacity=currentCapacity)
             return True
         except Exception as e:
             print e
-            return False        
+            return False
 
     def unsubscribe(self, event, username):
         id = int(event.split('_')[1])
         try:
-            Subscription.objects.filter(username=username).delete()
+            Subscription.objects.filter(username=username).filter(eventid=id).delete()
             del(self.myEventList[id])
-            return self.updateEventCapacity(1,id)
+            return self.updateEventCapacity(1, id)
         except Exception as e:
             return str(e)
 
@@ -130,6 +128,6 @@ class FunctionAPI(object):
         try:
             s.save()
             self.Subscription_count += 1
-            return self.updateEventCapacity(-1,s.eventid)
+            return self.updateEventCapacity(-1, s.eventid)
         except Exception, e:
             return s.eventid, e
