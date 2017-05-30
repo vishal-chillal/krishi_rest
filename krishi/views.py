@@ -34,13 +34,16 @@ def home(request):
 def showEventDetails(req, myEvnt):
     res = fp.getEvent(myEvnt)
     html = getEventDetailsTable(myEvnt)
-    subscribe = "SUBSCRIBE_"
-    if res[u'id'] in fp.myEventList.keys():
-        subscribe = "UNSUBSCRIBE_"
-    html += "<a href=" + subscribe + str(res[u'id']) + ">"
-    html += subscribe[:-1] + "</a>"
+    if res[u'id'] not in fp.myEventList.keys() and fp.getEventCapacity(myEvnt) == 0 :
+            html += "<br><br><h6>SEATS UNAVAILABLE</h6>"
+    else:    
+        if res[u'id'] not in fp.myEventList.keys():
+            subscribe = "SUBSCRIBE_"
+        elif res[u'id'] in fp.myEventList.keys():
+            subscribe = "UNSUBSCRIBE_"
+        html += "<a href=" + subscribe + str(res[u'id']) + ">"
+        html += subscribe[:-1] + "</a>"
     return HttpResponse(html)
-
 
 
 def getEventDetailsTable(myEvnt):

@@ -64,8 +64,7 @@ class FunctionAPI(object):
         return self.allEventList
 
     def getMyEvents(self, username):
-        query = "SELECT * from krishi_subscription\
-                    where username = '" + username + "'"
+        query = "SELECT * from krishi_subscription where username = '" + username + "'"
 
         event_lst = Subscription.objects.raw(query)
         for eachEvnt in event_lst:
@@ -99,9 +98,13 @@ class FunctionAPI(object):
             print e
             return False
 
+    def getEventCapacity(self,eventid):
+        return Event.objects.filter(id=eventid).values()[0]["capacity"]
+
+
     def updateEventCapacity(self, decision, eventid):
         try:
-            currentCapacity = Event.objects.filter(id=eventid).values()[0]["capacity"]
+            currentCapacity = self.getEventCapacity(eventid)
             currentCapacity += decision
             Event.objects.filter(id=1).update(capacity = currentCapacity)
             return True
