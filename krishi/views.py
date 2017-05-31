@@ -30,13 +30,17 @@ def home(request):
             print request
             return render(request, 'loggedin.html', resp)
 
+def showEventDetailsAdmin(req, myEvnt):
+    res = fp.getEvent(myEvnt)
+    html = getEventDetailsTable(myEvnt)
+    return HttpResponse(html)
 
 def showEventDetails(req, myEvnt):
     res = fp.getEvent(myEvnt)
     html = getEventDetailsTable(myEvnt)
     if res[u'id'] not in fp.myEventList.keys() and fp.getEventCapacity(myEvnt) == 0 :
             html += "<br><br><h6>SEATS UNAVAILABLE</h6>"
-    else:    
+    else:
         if res[u'id'] not in fp.myEventList.keys():
             subscribe = "SUBSCRIBE_"
         elif res[u'id'] in fp.myEventList.keys():

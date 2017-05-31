@@ -1,5 +1,5 @@
 from krishi.models import UserInfo, Event, EndUser, Subscription
-
+import time
 
 class FunctionAPI(object):
     """docstring for FunctionAPI"""
@@ -82,14 +82,15 @@ class FunctionAPI(object):
 
     def addEvent(self, req):
         obj = Event()
-        obj.capacity = req["capacity"]
-        obj.description = req["description"]
-        obj.eventname = req["eventname"]
-        obj.location = req["location"]
-        obj.fees = req["fees"]
-        obj.startdate = req["startdate"]
-        obj.enddate = req["enddate"]
-        obj.info = req["info"]
+        obj.id = int(time.time())
+        obj.capacity = req["capacity"].replace("+", " ")
+        obj.description = req["description"].replace("+", " ")
+        obj.eventname = req["eventname"].replace("+", " ")
+        obj.location = req["location"].replace("+", " ")
+        obj.fees = req["fees"].replace("+", " ")
+        obj.startdate = req["startdate"].replace("+", " ")
+        obj.enddate = req["enddate"].replace("+", " ")
+        obj.info = req["info"].replace("+", " ")
         try:
             obj.save()
             return True
